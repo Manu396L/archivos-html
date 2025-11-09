@@ -1,0 +1,295 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil del Empleado - Sistema Biométrico</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style_perfil.css' %}">
+</head>
+<body>
+    <a href="{% url 'sistema:personal' %}" class="btn-volver" title="Volver al listado">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <header>
+        <h1><i class="fa-solid fa-id-card"></i> Perfil del Empleado</h1>
+        <p>Información completa y credenciales de acceso del empleado</p>
+    </header>
+
+    <div class="main-container">
+        <!-- Panel de información principal -->
+        <div class="profile-panel">
+            <div class="profile-header">
+                <div class="profile-photo-section">
+                    <div class="profile-photo" id="profile-photo">
+                        {% if empleado.foto %}
+                            <img src="{{ empleado.foto.url }}" alt="{{ empleado.nombre_completo }}">
+                        {% else %}
+                            <i class="fa-solid fa-user"></i>
+                        {% endif %}
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn btn-primary" onclick="editarPerfil()">
+                            <i class="fa-solid fa-pen"></i> Editar Perfil
+                        </button>
+                        <button class="btn btn-secondary" onclick="window.print()">
+                            <i class="fa-solid fa-print"></i> Imprimir
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="profile-info">
+                    <h2 id="empleado-nombre">{{ empleado.nombre_completo }}</h2>
+                    <p class="profile-cargo" id="empleado-cargo">{{ empleado.cargo }}</p>
+                    <p class="profile-id" id="empleado-id">ID: {{ empleado.id_empleado }}</p>
+                    
+                    <div class="status-badges">
+                        <span class="badge status-{{ empleado.estado }}" id="status-empleado">
+                            <i class="fa-solid fa-circle"></i> {{ empleado.get_estado_display }}
+                        </span>
+                        <span class="badge" id="nivel-seguridad-badge">
+                            <i class="fa-solid fa-shield-halved"></i> Nivel: {{ empleado.get_nivel_seguridad_display }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información básica -->
+            <div class="info-section">
+                <h3><i class="fa-solid fa-user"></i> Información Personal</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-id-badge"></i> ID de Empleado:</label>
+                        <span>{{ empleado.id_empleado }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-signature"></i> Nombre Completo:</label>
+                        <span>{{ empleado.nombre_completo }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-briefcase"></i> Cargo:</label>
+                        <span>{{ empleado.cargo }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-building"></i> Área/Departamento:</label>
+                        <span>{{ empleado.departamento.nombre|default:"No asignado" }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-envelope"></i> Correo Corporativo:</label>
+                        <span>{{ empleado.correo_corporativo }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-calendar"></i> Fecha de Ingreso:</label>
+                        <span>{{ empleado.fecha_ingreso|date:"d/m/Y" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información de ubicación -->
+            <div class="info-section">
+                <h3><i class="fa-solid fa-location-dot"></i> Ubicación Laboral</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-layer-group"></i> Tipo de Sede:</label>
+                        <span>{{ empleado.sede.get_tipo_display|default:"N/A" }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-location-dot"></i> Nombre de Sede:</label>
+                        <span>{{ empleado.sede.nombre|default:"No asignada" }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-map"></i> Dirección:</label>
+                        <span>{{ empleado.sede.direccion|default:"No disponible" }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-door-open"></i> Accesos Permitidos:</label>
+                        <span>{{ credenciales.count }} credencial(es) activa(s)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Credenciales de seguridad -->
+            <div class="info-section">
+                <h3><i class="fa-solid fa-fingerprint"></i> Credenciales de Seguridad</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-microchip"></i> Tipo de Dispositivo:</label>
+                        <span>{{ empleado.sede.get_dispositivo_biometrico_display|default:"N/A" }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-shield-halved"></i> Nivel de Seguridad:</label>
+                        <span>{{ empleado.get_nivel_seguridad_display }}</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-key"></i> Credencial Asignada:</label>
+                        <span>
+                            {% for credencial in credenciales %}
+                                {{ credencial.get_tipo_credencial_display }}{% if not forloop.last %}, {% endif %}
+                            {% empty %}
+                                Sin credenciales
+                            {% endfor %}
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="fa-solid fa-calendar-check"></i> Último Acceso:</label>
+                        <span>
+                            {% if ultimos_accesos.first %}
+                                {{ ultimos_accesos.first.fecha_hora|date:"d/m/Y H:i" }}
+                            {% else %}
+                                Sin registros
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historial de accesos recientes -->
+            <div class="info-section">
+                <h3><i class="fa-solid fa-clock-rotate-left"></i> Accesos Recientes</h3>
+                <div class="accesos-container">
+                    {% for acceso in ultimos_accesos %}
+                    <div class="acceso-item">
+                        <div class="acceso-icon">
+                            {% if acceso.tipo_acceso == 'entrada' %}
+                                <i class="fa-solid fa-door-open"></i>
+                            {% else %}
+                                <i class="fa-solid fa-door-closed"></i>
+                            {% endif %}
+                        </div>
+                        <div class="acceso-info">
+                            <span class="acceso-tipo">
+                                {{ acceso.get_tipo_acceso_display }} - {{ acceso.dispositivo.sede.nombre }}
+                            </span>
+                            <span class="acceso-fecha">{{ acceso.fecha_hora|date:"d/m/Y H:i" }}</span>
+                        </div>
+                        <div class="acceso-estado {% if acceso.estado == 'exitoso' %}success{% else %}error{% endif %}">
+                            {% if acceso.estado == 'exitoso' %}
+                                <i class="fa-solid fa-check"></i> Exitoso
+                            {% else %}
+                                <i class="fa-solid fa-times"></i> Fallido
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="acceso-item">
+                        <div class="acceso-info">
+                            <span class="acceso-tipo">No hay registros de acceso disponibles</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel lateral con información adicional -->
+        <div class="sidebar">
+            <!-- Tarjeta de credencial -->
+            <div class="credential-card">
+                <div class="credential-header">
+                    <i class="fa-solid fa-id-card"></i>
+                    <h4>Credencial de Acceso</h4>
+                </div>
+                <div class="credential-body">
+                    <div class="credential-photo">
+                        <div id="credential-photo">
+                            {% if empleado.foto %}
+                                <img src="{{ empleado.foto.url }}" alt="{{ empleado.nombre_completo }}">
+                            {% else %}
+                                <i class="fa-solid fa-user"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="credential-info">
+                        <div class="credential-name">{{ empleado.nombre_completo }}</div>
+                        <div class="credential-id">ID: {{ empleado.id_empleado }}</div>
+                        <div class="credential-cargo">{{ empleado.cargo }}</div>
+                        <div class="credential-area">{{ empleado.departamento.nombre|default:"Sin departamento" }}</div>
+                    </div>
+                    <div class="credential-footer">
+                        <div class="credential-type">{{ empleado.sede.get_dispositivo_biometrico_display|default:"N/A" }}</div>
+                        <div class="credential-qr">
+                            <i class="fa-solid fa-qrcode"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información de contacto -->
+            <div class="contact-card">
+                <h4><i class="fa-solid fa-address-book"></i> Contacto</h4>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>{{ empleado.correo_corporativo }}</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>{{ empleado.telefono|default:"Sin teléfono" }}</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-building"></i>
+                        <span>{{ empleado.sede.nombre|default:"Sin sede asignada" }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estadísticas -->
+            <div class="stats-card">
+                <h4><i class="fa-solid fa-chart-pie"></i> Estadísticas</h4>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value">{{ accesos_mes }}</div>
+                        <div class="stat-label">Accesos este mes</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">
+                            {% widthratio accesos_mes 30 1 %}
+                        </div>
+                        <div class="stat-label">Promedio diario</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">
+                            {% if ultimos_accesos.first %}
+                                {{ ultimos_accesos.first.fecha_hora|timesince }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                        <div class="stat-label">Última actividad</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div>Copyright© Sistema Biométrico 2025</div>
+        <div>Perfil generado el {{ fecha_generacion|date:"d/m/Y H:i" }}</div>
+    </div>
+    
+    <!-- Menu de usuario -->
+    <nav class="menu">
+        <h3><a><i class="fa-solid fa-bars"></i></a></h3>
+        <div>
+            <ul>
+                <li><a href="{% url 'sistema:notificaciones' %}"><i class="fa-solid fa-bell"></i><b>  Notificaciones</b></a></li>
+                <li><a href="{% url 'sistema:perfil' %}" class="active"><i class="fa-solid fa-user"></i><b>  Perfil</b></a></li>
+                <li><a href="{% url 'sistema:cambiar_contrasena' %}"><i class="fa-solid fa-key"></i><b> contraseña</b></a></li>
+                <li><a href="{% url 'sistema:configuracion' %}"><i class="fa-solid fa-cog"></i><b>  Configuración</b></a></li>
+                <li><a href="{% url 'sistema:cerrar_sesion' %}"><i class="fa-solid fa-right-from-bracket"></i><b>  Cerrar Sesión</b></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <script src="{% static 'js/perfil.js' %}"></script>
+    <script>
+        // Actualizar elementos con datos del empleado
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Perfil cargado: {{ empleado.nombre_completo }}');
+        });
+    </script>
+</body>
+</html>

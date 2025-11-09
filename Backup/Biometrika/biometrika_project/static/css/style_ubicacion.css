@@ -1,0 +1,852 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    min-height: 100vh;
+    padding: 40px 20px;
+    position: relative;
+}
+
+/* Botón para volver */
+.btn-volver {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: #2c3e50;
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.btn-volver i {
+    font-size: 20px;
+}
+
+.btn-volver:hover {
+    background: #1abc9c;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(26, 188, 156, 0.3);
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+header h1 {
+    color: #2c3e50;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+header h1 i {
+    color: #1abc9c;
+    font-size: 30px;
+}
+
+header p {
+    color: #34495e;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Main container */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 30px;
+}
+
+/* Panel para agregar ubicaciones */
+.add-panel {
+    flex: 1;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    max-width: 400px;
+}
+
+.add-panel:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    border-color: #1abc9c;
+}
+
+/* Panel para listar ubicaciones */
+.list-panel {
+    flex: 2;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.list-panel:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    border-color: #1abc9c;
+}
+
+h2 {
+    color: #2c3e50;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+h2 i {
+    color: #1abc9c;
+    font-size: 22px;
+}
+
+/* Mensaje de éxito */
+.mensaje-exito {
+    display: none;
+    background: #d4edda;
+    color: #155724;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border-left: 4px solid #28a745;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.mensaje-exito.mostrar {
+    display: flex;
+}
+
+.mensaje-exito i {
+    font-size: 22px;
+    color: #28a745;
+}
+
+/* Formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Fieldsets */
+fieldset {
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+fieldset:hover {
+    border-color: #1abc9c;
+    box-shadow: 0 2px 8px rgba(26, 188, 156, 0.1);
+}
+
+legend {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+legend i {
+    color: #1abc9c;
+    font-size: 18px;
+}
+
+/* Form groups */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+/* Labels */
+label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+label i {
+    color: #1abc9c;
+    font-size: 16px;
+    min-width: 18px;
+}
+
+.required {
+    color: #c62828;
+    margin-left: 2px;
+}
+
+/* Inputs, textarea y select */
+input[type="text"],
+textarea,
+select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    color: #2c3e50;
+}
+
+input[type="text"]:hover,
+textarea:hover,
+select:hover {
+    border-color: #34495e;
+}
+
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #1abc9c;
+    box-shadow: 0 2px 8px rgba(26, 188, 156, 0.2);
+}
+
+/* Textarea específico */
+textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+}
+
+/* Select personalizado */
+select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232c3e50' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px;
+}
+
+/* Helper text */
+.helper-text {
+    display: block;
+    margin-top: 8px;
+    color: #7f8c8d;
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* Placeholders */
+input::placeholder,
+textarea::placeholder {
+    color: #95a5a6;
+}
+
+/* Botón de envío */
+.btn {
+    background: #1abc9c;
+    color: #fff;
+    padding: 16px 35px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn i {
+    font-size: 18px;
+}
+
+.btn:hover {
+    background: #16a085;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(26, 188, 156, 0.3);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Botón de acción */
+.btn-accion {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-editar {
+    background: #f39c12;
+    color: #fff;
+}
+
+.btn-editar:hover {
+    background: #e67e22;
+    transform: translateY(-2px);
+}
+
+.btn-eliminar {
+    background: #e74c3c;
+    color: #fff;
+}
+
+.btn-eliminar:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* Filtros */
+.filter-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-section input, .filter-section select {
+    flex: 1;
+    min-width: 150px;
+}
+
+/* Tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+thead {
+    background: #2c3e50;
+    color: #fff;
+}
+
+th {
+    padding: 14px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+    transition: all 0.2s ease;
+}
+
+tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+td {
+    padding: 14px 12px;
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+/* Estado vacío */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #7f8c8d;
+}
+
+.empty-state p {
+    margin-bottom: 15px;
+}
+
+.empty-state i {
+    font-size: 48px;
+    color: #bdc3c7;
+    display: block;
+    margin-bottom: 15px;
+}
+
+/* Badges de tipo */
+.badge-tipo {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-sede {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.badge-oficina {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.badge-area {
+    background: #fff3e0;
+    color: #f57c00;
+}
+
+/* Badges de seguridad */
+.badge-seguridad {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-bajo {
+    background: #c8e6c9;
+    color: #2e7d32;
+}
+
+.badge-medio {
+    background: #fff9c4;
+    color: #f57f17;
+}
+
+.badge-alto {
+    background: #ffcdd2;
+    color: #c62828;
+}
+
+/* Botones de acción */
+.acciones {
+    display: flex;
+    gap: 8px;
+}
+
+/* Información de soporte */
+.soporte-info {
+    text-align: center;
+    margin: 40px 0;
+    color: #7f8c8d;
+    font-size: 14px;
+    line-height: 1.8;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid #1abc9c;
+    transition: all 0.3s ease;
+}
+
+.soporte-info:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.soporte-info i {
+    color: #1abc9c;
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+.soporte-info a {
+    color: #2c3e50;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.soporte-info a:hover {
+    color: #1abc9c;
+}
+
+/* Footer */
+.footer {
+    margin-top: 40px;
+    background: #2c3e50;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #ecf0f1;
+    border-radius: 8px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Estilos para el botón desplegable */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background: #1abc9c;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.dropdown-toggle::after {
+    content: "▼";
+    font-size: 10px;
+}
+
+.dropdown-toggle:hover {
+    background: #16a085;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(26, 188, 156, 0.3);
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    z-index: 1;
+    right: 0;
+    top: 100%;
+    margin-top: 5px;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Menu desplegable */
+.menu {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    display: block;
+    z-index: 1000;
+}
+
+/* Botón circular para el icono */
+.menu i {
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: #2c3e50;
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+/* asegurar que el enlace que envuelve el icono no rompa el layout */
+.menu h3 a {
+    display: inline-block;
+    line-height: 0;
+    text-decoration: none;
+}
+
+/* Quitar subrayado en el menú (trigger y opciones) */
+.menu h3 a,
+.menu div ul li a {
+    text-decoration: none;
+}
+
+/* Panel desplegable se posiciona justo encima del botón (sin gap) */
+.menu div {
+    display: none;
+    position: absolute;
+    left: 0;
+    bottom: 48px; /* <- cambiado: elimina el gap que provocaba que el menú se cerrara al mover el mouse */
+    background: #2c3e50;
+    min-width: 220px;
+    border-radius: 8px;
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.18);
+    z-index: 1010;
+    pointer-events: auto; /* asegurar que el panel reciba eventos del ratón */
+}
+
+/* Mostrar menú cuando el puntero está sobre .menu o cuando tiene foco interno (teclado/tab) */
+.menu:hover div,
+.menu:focus-within div {
+    display: block;
+}
+
+/* Mantener interacción por :hover si está*/
+.menu:hover div {
+    display: block;
+}
+
+/* Forzar texto blanco en el menú desplegable */
+.menu div ul,
+.menu div ul li,
+.menu div ul li a {
+    color: #ffffff; /* texto en blanco */
+}
+
+/* Iconos dentro de las opciones también en blanco */
+.menu div ul li a i {
+    color: #ffffff;
+}
+
+/* Mantener buen contraste en hover */
+.menu div ul li a:hover {
+    background: rgba(255,255,255,0.06);
+    color: #ffffff;
+}
+
+/* Opcional: línea separadora más sutil sobre fondo oscuro */
+.menu div ul li a {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Pequeña mejora visual al pasar por el botón */
+.menu:hover i {
+    transform: translateY(-2px);
+    background: #34495e;
+}
+
+/* Cambios: usar #1db598 cuando el mouse esté cerca (hover) o haya foco */
+.menu:hover i,
+.menu:focus-within i {
+    background: #2c3e50; /* color solicitado */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(29,181,152,0.18);
+}
+
+/* Resaltar el panel del menú con un borde sutil del mismo color */
+.menu div {
+    /* ...existing properties... */
+    border: 2px solid transparent; /* asegurar que haya borde para animar */
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.menu:hover div,
+.menu:focus-within div {
+    border-color: rgba(29,181,152,0.18); /* borde sutil verde cuando el mouse está cerca */
+    box-shadow: 0 10px 30px rgba(29,181,152,0.06);
+}
+
+/* Hover en las opciones del menú con tono verde translúcido */
+.menu div ul li a:hover {
+    background: rgba(29,181,152,0.10);
+    color: #ffffff;
+}
+
+/* Eliminar el punto blanco (marcador) en las opciones del menú */
+.menu div ul {
+    list-style: none;    /* quita el marcador */
+    margin: 0;
+    padding: 0;
+}
+
+.menu div ul li {
+    list-style: none;    /* refuerzo para compatibilidad */
+}
+
+/* Ocultar explícitamente el marcador en navegadores que usan ::marker */
+.menu div ul li::marker {
+    content: '';
+    display: none;
+}
+
+/* Asegurar que los enlaces ocupen todo el ancho y no muestren subrayado */
+.menu div ul li a {
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+    color: #ffffff; /* ya definido pero reforzado */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body {
+        padding: 20px 15px;
+    }
+
+    .btn-volver {
+        width: 45px;
+        height: 45px;
+        top: 15px;
+        left: 15px;
+    }
+
+    .btn-volver i {
+        font-size: 18px;
+    }
+
+    header {
+        margin-bottom: 30px;
+    }
+
+    header h1 {
+        font-size: 24px;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    header h1 i {
+        font-size: 26px;
+    }
+
+    header p {
+        font-size: 14px;
+    }
+
+    .main-container {
+        flex-direction: column;
+    }
+
+    .add-panel, .list-panel {
+        padding: 25px 20px;
+        max-width: 100%;
+    }
+
+    fieldset {
+        padding: 20px 15px;
+    }
+
+    legend {
+        font-size: 16px;
+    }
+
+    label {
+        font-size: 14px;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 14px 28px;
+    }
+
+    /* Tabla responsive */
+    .tabla-container {
+        overflow-x: auto;
+    }
+
+    table {
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 10px 8px;
+    }
+
+    .btn-accion {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    .soporte-info {
+        margin: 30px 0;
+        padding: 15px;
+        font-size: 13px;
+    }
+
+    .footer {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+}

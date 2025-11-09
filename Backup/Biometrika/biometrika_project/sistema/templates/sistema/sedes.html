@@ -1,0 +1,233 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Ubicaciones Biométricas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style_ubicacion.css' %}">
+</head>
+<body>
+    <a href="{% url 'sistema:dashboard' %}" class="btn-volver" title="Volver al inicio">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <header>
+        <h1><i class="fa-solid fa-map-location-dot"></i> Panel de Gestión de Ubicaciones</h1>
+        <p>Utiliza este formulario para registrar nuevas sedes, oficinas y áreas de acceso.</p>
+    </header>
+
+    <div class="main-container">
+        <!-- Panel para agregar ubicaciones -->
+        <div class="add-panel">
+            <h2><i class="fa-solid fa-plus-circle"></i> Agregar Ubicación</h2>
+            
+            <!-- Mensajes de éxito -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mensaje-exito" id="mensaje-exito" style="display: block;">
+                        <i class="fa-solid fa-check"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="mensaje-exito" id="mensaje-exito">
+                    <i class="fa-solid fa-check"></i>
+                    La ubicación ha sido registrada correctamente.
+                </div>
+            {% endif %}
+
+            <form id="formularioUbicacion" method="POST" action="{% url 'sistema:sedes' %}">
+                {% csrf_token %}
+                
+                <fieldset>
+                    <legend><i class="fa-solid fa-building"></i> Información de la Sede</legend>
+                    
+                    <div class="form-group">
+                        <label for="tipo_ubicacion"><i class="fa-solid fa-layer-group"></i> Tipo de Ubicación: <span class="required">*</span></label>
+                        <select id="tipo_ubicacion" name="tipo_ubicacion" required>
+                            <option value="" disabled selected>Seleccione un tipo</option>
+                            <option value="sede" {% if form.tipo_ubicacion.value == 'sede' %}selected{% endif %}>Sede (Edificio Principal)</option>
+                            <option value="oficina" {% if form.tipo_ubicacion.value == 'oficina' %}selected{% endif %}>Oficina (Piso/Ala)</option>
+                            <option value="area" {% if form.tipo_ubicacion.value == 'area' %}selected{% endif %}>Área Específica (Sala/Cuarto)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nombre_sede"><i class="fa-solid fa-signature"></i> Nombre de la Ubicación: <span class="required">*</span></label>
+                        <input type="text" id="nombre_sede" name="nombre_sede" value="{{ form.nombre_sede.value|default:'' }}" placeholder="Ej: Sede Central" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codigo_unico"><i class="fa-solid fa-barcode"></i> Código Único (ID): <span class="required">*</span></label>
+                        <input type="text" id="codigo_unico" name="codigo_unico" value="{{ form.codigo_unico.value|default:'' }}" placeholder="Ej: WAN-001 (Para referencia del sistema)" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="direccion"><i class="fa-solid fa-location-dot"></i> Dirección Completa:</label>
+                        <textarea id="direccion" name="direccion" rows="3" placeholder="Calle, número, ciudad">{{ form.direccion.value|default:'' }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descripcion"><i class="fa-solid fa-align-left"></i> Descripción Adicional:</label>
+                        <textarea id="descripcion" name="descripcion" rows="3" placeholder="Detalles adicionales">{{ form.descripcion.value|default:'' }}</textarea>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend><i class="fa-solid fa-fingerprint"></i> Configuración de Seguridad Biométrica</legend>
+
+                    <div class="form-group">
+                        <label for="dispositivo_biometrico"><i class="fa-solid fa-microchip"></i> Tipo de Dispositivo Biométrico:</label>
+                        <select id="dispositivo_biometrico" name="dispositivo_biometrico">
+                            <option value="huella" {% if form.dispositivo_biometrico.value == 'huella' %}selected{% endif %}>Lector de Huella Dactilar</option>
+                            <option value="tarjeta" {% if form.dispositivo_biometrico.value == 'tarjeta' %}selected{% endif %}>Tarjeta de Acceso</option>
+                            <option value="pin" {% if form.dispositivo_biometrico.value == 'pin' %}selected{% endif %}>PIN</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nivel_seguridad"><i class="fa-solid fa-shield-halved"></i> Nivel de Seguridad:</label>
+                        <select id="nivel_seguridad" name="nivel_seguridad">
+                            <option value="bajo" {% if form.nivel_seguridad.value == 'bajo' %}selected{% endif %}>Bajo</option>
+                            <option value="medio" {% if form.nivel_seguridad.value == 'medio' %}selected{% endif %}>Medio</option>
+                            <option value="alto" {% if form.nivel_seguridad.value == 'alto' %}selected{% endif %}>Alto</option>
+                        </select>
+                    </div>
+                </fieldset>
+
+                <!-- Mostrar errores -->
+                {% if form.errors %}
+                <div class="mensaje-error">
+                    <i class="fa-solid fa-exclamation-triangle"></i>
+                    Por favor, corrija los errores:
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ field.label }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <button type="submit" class="btn"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+            </form>
+        </div>
+        
+        <!-- Panel para listar ubicaciones -->
+        <div class="list-panel">
+            <div class="header-actions">
+                <h2><i class="fa-solid fa-list-check"></i> Ubicaciones Registradas</h2>
+                
+                <!-- Botón desplegable -->
+                <div class="dropdown">
+                    <button class="dropdown-toggle" id="dropdownMenuButton">
+                        Opciones
+                    </button>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a class="dropdown-item" id="opcion-filtros">Mostrar/Ocultar Filtros</a>
+                        <a class="dropdown-item" id="opcion-modificar-todo">Modificar Todo</a>
+                        <a class="dropdown-item" id="opcion-eliminar-todo">Eliminar Todo</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección de filtros (inicialmente oculta) -->
+            <div class="filter-section" id="filtros" style="display: none;">
+                <input type="text" id="filtro-nombre" placeholder="Filtrar por nombre">
+                <select id="filtro-tipo">
+                    <option value="">Todos los tipos</option>
+                    <option value="sede">Sede</option>
+                    <option value="oficina">Oficina</option>
+                    <option value="area">Área</option>
+                </select>
+                <select id="filtro-dispositivo">
+                    <option value="">Todos los dispositivos</option>
+                    <option value="huella">Lector de Huella</option>
+                    <option value="tarjeta">Tarjeta de Acceso</option>
+                    <option value="pin">PIN</option>
+                </select>
+                <button id="btn-limpiar-filtros" class="btn-accion">Limpiar Filtros</button>
+            </div>
+            
+            <!-- Tabla de ubicaciones -->
+            <div class="tabla-container">
+                <table id="tablaUbicaciones">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Dispositivo</th>
+                            <th>Seguridad</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTabla">
+                        <!-- Las ubicaciones desde la BD -->
+                        {% for sede in sedes %}
+                        <tr>
+                            <td>{{ sede.codigo_unico }}</td>
+                            <td>{{ sede.nombre_sede }}</td>
+                            <td>{{ sede.get_tipo_ubicacion_display }}</td>
+                            <td>{{ sede.get_dispositivo_biometrico_display }}</td>
+                            <td>{{ sede.get_nivel_seguridad_display }}</td>
+                            <td>
+                                <button class="btn-editar" onclick="editarSede({{ sede.id }})">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <button class="btn-eliminar" onclick="eliminarSede({{ sede.id }})">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="no-data">No hay ubicaciones registradas</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Estado vacío -->
+            <div id="estado-vacio" class="empty-state" {% if sedes %}style="display: none;"{% endif %}>
+                <i class="fa-solid fa-inbox"></i>
+                <p>No hay ubicaciones registradas aún</p>
+                <button class="btn" id="btn-agregar-primero"><i class="fa-solid fa-plus"></i> Agregar Primera Ubicación</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="soporte-info">
+        <i class="fa-solid fa-headset"></i>
+        <strong>¿Necesita ayuda?</strong><br>
+        Contacte con Soporte Técnico al <strong>4666-1212</strong> o al correo 
+        <a href="mailto:soporte@empresa.com">soporte@biometrika.com</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div>Copyright© Sistema Biométrico 2025</div>
+        <div>Versión 1.0</div>
+    </div>
+    
+    <!-- Menu de usuario: mover dentro del body para que el hover/focus abarque trigger + panel -->
+    <nav class="menu">
+        <h3><a><i class="fa-solid fa-bars"></i></a></h3>
+        <div>
+            <ul>
+                <li><a href="{% url 'sistema:notificaciones' %}"><i class="fa-solid fa-bell"></i><b>  Notificaciones</b></a></li>
+                <li><a href="{% url 'sistema:perfil' %}"><i class="fa-solid fa-user"></i><b>  Perfil</b></a></li>
+                <li><a href="{% url 'sistema:cambiar_contrasena' %}"><i class="fa-solid fa-key"></i><b> contraseña</b></a></li>
+                <li><a href="{% url 'sistema:configuracion' %}"><i class="fa-solid fa-cog"></i><b>  Configuración</b></a></li>
+                <li><a href="{% url 'sistema:cerrar_sesion' %}"><i class="fa-solid fa-right-from-bracket"></i><b>  Cerrar Sesión</b></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <script src="{% static 'js/ubiaciones.js' %}"></script>
+</body>
+</html>

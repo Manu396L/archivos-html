@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Notificaciones - Sistema Biometrika</title>
+    <link rel="stylesheet" href="../assets/css/style_dashboard.css">
+    <link rel="stylesheet" href="../assets/css/style_notificaciones.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    
+    <!--Barra de opciones-->
+    <nav class="barra_opciones"> 
+        <h2>
+            <div class="fingerprint-scanner" id="fingerprintScanner">
+                <i class="fas fa-fingerprint fa-1x text-primary">   Biometrika</i>
+            </div> 
+        </h2>
+        <ul>
+            <li><a href="../admin/dashboard.html"><i class="fa-solid fa-gauge"></i>Dashboard</a></li>
+            <li><a href="../admin/sedes.html"><i class="fa-solid fa-building"></i>Sedes y Areas</a></li>
+            <li><a href="../admin/personal.html"><i class="fa-solid fa-users"></i>Gestion de Personal</a></li>
+            <li><a href="../admin/dispositivos.html"><i class="fas fa-microchip"></i>Dispositivos</a></li>
+            <li><a href="../admin/soporte.html?from=dashboard"><i class="fa-solid fa-headset"></i>Soporte</a></li> 
+            <li><a href="../admin/reportes.html"><i class="fa-solid fa-file-lines"></i>Reportes</a></li>
+            <li><a href="../admin/alertas.html"><i class="fa-solid fa-bell"></i>Alertas</a></li>
+        </ul>
+    </nav>
+    
+    <!--Contenido principal de la pagina-->
+    <main class="contenido">
+        <header>
+            <h1><i class="fa-solid fa-bell"></i> <b>Notificaciones del Sistema</b></h1>
+        </header>
+        
+        <!-- Resumen de notificaciones -->
+        <section class="resumen-notificaciones">
+            <div class="resumen-item no-leidas">
+                <div class="resumen-valor">12</div>
+                <div class="resumen-label">No Leídas</div>
+            </div>
+            <div class="resumen-item criticas">
+                <div class="resumen-valor">5</div>
+                <div class="resumen-label">Críticas</div>
+            </div>
+            <div class="resumen-item hoy">
+                <div class="resumen-valor">8</div>
+                <div class="resumen-label">Hoy</div>
+            </div>
+            <div class="resumen-item total">
+                <div class="resumen-valor">47</div>
+                <div class="resumen-label">Total</div>
+            </div>
+        </section>
+        
+        <!-- Filtros y acciones -->
+        <section class="filtros-notificaciones">
+            <h3><i class="fa-solid fa-filter"></i> Filtros y Acciones</h3>
+            <div class="filtros-grid">
+                <div class="filtro-group">
+                    <label for="filtro-tipo">Tipo de Notificación</label>
+                    <select id="filtro-tipo">
+                        <option value="">Todos los tipos</option>
+                        <option value="alerta">Alertas del Sistema</option>
+                        <option value="dispositivo">Estado de Dispositivos</option>
+                        <option value="seguridad">Eventos de Seguridad</option>
+                        <option value="sistema">Actualizaciones del Sistema</option>
+                        <option value="usuario">Actividad de Usuarios</option>
+                    </select>
+                </div>
+                <div class="filtro-group">
+                    <label for="filtro-prioridad">Prioridad</label>
+                    <select id="filtro-prioridad">
+                        <option value="">Todas las prioridades</option>
+                        <option value="critica">Crítica</option>
+                        <option value="alta">Alta</option>
+                        <option value="media">Media</option>
+                        <option value="baja">Baja</option>
+                        <option value="informativa">Informativa</option>
+                    </select>
+                </div>
+                <div class="filtro-group">
+                    <label for="filtro-estado">Estado</label>
+                    <select id="filtro-estado">
+                        <option value="">Todos los estados</option>
+                        <option value="no-leida">No Leída</option>
+                        <option value="leida">Leída</option>
+                        <option value="archivada">Archivada</option>
+                    </select>
+                </div>
+                <div class="filtro-group">
+                    <label for="filtro-fecha">Fecha</label>
+                    <select id="filtro-fecha">
+                        <option value="">Cualquier fecha</option>
+                        <option value="hoy">Hoy</option>
+                        <option value="ayer">Ayer</option>
+                        <option value="semana">Esta semana</option>
+                        <option value="mes">Este mes</option>
+                    </select>
+                </div>
+            </div>
+            <div class="botones-filtro">
+                <button class="btn-filtro btn-marcar-todas" id="btnMarcarTodas">
+                    <i class="fa-solid fa-check-double"></i> Marcar Todas como Leídas
+                </button>
+                <button class="btn-filtro btn-limpiar" id="btnLimpiar">
+                    <i class="fa-solid fa-eraser"></i> Limpiar Filtros
+                </button>
+                <button class="btn-filtro btn-aplicar" id="btnAplicar">
+                    <i class="fa-solid fa-filter"></i> Aplicar Filtros
+                </button>
+            </div>
+        </section>
+        
+        <!-- Lista de notificaciones -->
+        <section class="lista-notificaciones">
+            <h2><i class="fa-solid fa-list"></i> Notificaciones Recientes</h2>
+            
+            <div class="notificaciones-container">
+                <!-- Notificación 1 -->
+                <div class="notificacion-item no-leida critica">
+                    <div class="notificacion-icono">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="notificacion-contenido">
+                        <div class="notificacion-header">
+                            <h4>Dispositivo BIO-001 Caído</h4>
+                            <span class="notificacion-fecha">Hace 15 minutos</span>
+                        </div>
+                        <p class="notificacion-mensaje">
+                            El dispositivo de huella dactilar en Recepción Principal ha dejado de responder. 
+                            No se están registrando accesos desde las 08:45 AM.
+                        </p>
+                        <div class="notificacion-detalles">
+                            <span class="notificacion-tipo">Alerta de Dispositivo</span>
+                            <span class="notificacion-prioridad critica">Crítica</span>
+                        </div>
+                    </div>
+                    <div class="notificacion-acciones">
+                        <button class="btn-notificacion btn-marcar" title="Marcar como leída">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        <button class="btn-notificacion btn-archivar" title="Archivar">
+                            <i class="fa-solid fa-box-archive"></i>
+                        </button>
+                        <button class="btn-notificacion btn-detalle" title="Ver detalles">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notificación 2 -->
+                <div class="notificacion-item no-leida alta">
+                    <div class="notificacion-icono">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div class="notificacion-contenido">
+                        <div class="notificacion-header">
+                            <h4>Intento de Acceso No Autorizado</h4>
+                            <span class="notificacion-fecha">Hace 2 horas</span>
+                        </div>
+                        <p class="notificacion-mensaje">
+                            Múltiples intentos fallidos de autenticación en el dispositivo BIO-045. 
+                            Usuario: Carlos Mendoza. Se ha bloqueado temporalmente el acceso.
+                        </p>
+                        <div class="notificacion-detalles">
+                            <span class="notificacion-tipo">Evento de Seguridad</span>
+                            <span class="notificacion-prioridad alta">Alta</span>
+                        </div>
+                    </div>
+                    <div class="notificacion-acciones">
+                        <button class="btn-notificacion btn-marcar" title="Marcar como leída">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        <button class="btn-notificacion btn-archivar" title="Archivar">
+                            <i class="fa-solid fa-box-archive"></i>
+                        </button>
+                        <button class="btn-notificacion btn-detalle" title="Ver detalles">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notificación 3 -->
+                <div class="notificacion-item leida media">
+                    <div class="notificacion-icono">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <div class="notificacion-contenido">
+                        <div class="notificacion-header">
+                            <h4>Backup Completado Exitosamente</h4>
+                            <span class="notificacion-fecha">Hoy, 02:30 AM</span>
+                        </div>
+                        <p class="notificacion-mensaje">
+                            El backup automático de la base de datos se ha completado correctamente. 
+                            Tamaño del archivo: 2.4 GB. Duración: 15 minutos.
+                        </p>
+                        <div class="notificacion-detalles">
+                            <span class="notificacion-tipo">Mantenimiento del Sistema</span>
+                            <span class="notificacion-prioridad media">Media</span>
+                        </div>
+                    </div>
+                    <div class="notificacion-acciones">
+                        <button class="btn-notificacion btn-marcar" title="Marcar como leída">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        <button class="btn-notificacion btn-archivar" title="Archivar">
+                            <i class="fa-solid fa-box-archive"></i>
+                        </button>
+                        <button class="btn-notificacion btn-detalle" title="Ver detalles">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notificación 4 -->
+                <div class="notificacion-item no-leida baja">
+                    <div class="notificacion-icono">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <div class="notificacion-contenido">
+                        <div class="notificacion-header">
+                            <h4>Nuevo Usuario Registrado</h4>
+                            <span class="notificacion-fecha">Ayer, 04:15 PM</span>
+                        </div>
+                        <p class="notificacion-mensaje">
+                            Se ha registrado un nuevo usuario en el sistema: Laura Martínez. 
+                            Departamento: Ventas. Dispositivo asignado: BIO-201.
+                        </p>
+                        <div class="notificacion-detalles">
+                            <span class="notificacion-tipo">Gestión de Usuarios</span>
+                            <span class="notificacion-prioridad baja">Baja</span>
+                        </div>
+                    </div>
+                    <div class="notificacion-acciones">
+                        <button class="btn-notificacion btn-marcar" title="Marcar como leída">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        <button class="btn-notificacion btn-archivar" title="Archivar">
+                            <i class="fa-solid fa-box-archive"></i>
+                        </button>
+                        <button class="btn-notificacion btn-detalle" title="Ver detalles">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notificación 5 -->
+                <div class="notificacion-item leida informativa">
+                    <div class="notificacion-icono">
+                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                    </div>
+                    <div class="notificacion-contenido">
+                        <div class="notificacion-header">
+                            <h4>Actualización de Software Disponible</h4>
+                            <span class="notificacion-fecha">Ayer, 10:20 AM</span>
+                        </div>
+                        <p class="notificacion-mensaje">
+                            Nueva versión 2.1.5 del sistema Biometrika disponible. 
+                            Incluye mejoras en el rendimiento y corrección de errores menores.
+                        </p>
+                        <div class="notificacion-detalles">
+                            <span class="notificacion-tipo">Actualización del Sistema</span>
+                            <span class="notificacion-prioridad informativa">Informativa</span>
+                        </div>
+                    </div>
+                    <div class="notificacion-acciones">
+                        <button class="btn-notificacion btn-marcar" title="Marcar como leída">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        <button class="btn-notificacion btn-archivar" title="Archivar">
+                            <i class="fa-solid fa-box-archive"></i>
+                        </button>
+                        <button class="btn-notificacion btn-detalle" title="Ver detalles">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notificación 6 -->
+                <div class="notificacion-item no-leida critica">
+                    <div class="notificacion-icono">
+                        <i class="fa-solid fa-network-wired"></i>
+                    </div>
+                    <div class="notificacion-contenido">
+                        <div class="notificacion-header">
+                            <h4>Problema de Conectividad en Sede Norte</h4>
+                            <span class="notificacion-fecha">15/03/2024, 09:30 AM</span>
+                        </div>
+                        <p class="notificacion-mensaje">
+                            Se detectó pérdida de conectividad con los dispositivos biométricos 
+                            en la Sede Norte. Verificando estado de la red.
+                        </p>
+                        <div class="notificacion-detalles">
+                            <span class="notificacion-tipo">Problema de Red</span>
+                            <span class="notificacion-prioridad critica">Crítica</span>
+                        </div>
+                    </div>
+                    <div class="notificacion-acciones">
+                        <button class="btn-notificacion btn-marcar" title="Marcar como leída">
+                            <i class="fa-solid fa-check"></i>
+                        </button>
+                        <button class="btn-notificacion btn-archivar" title="Archivar">
+                            <i class="fa-solid fa-box-archive"></i>
+                        </button>
+                        <button class="btn-notificacion btn-detalle" title="Ver detalles">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Paginación -->
+            <div class="paginacion">
+                <div class="paginacion-info">
+                    Mostrando 1-6 de 47 notificaciones
+                </div>
+                <div class="paginacion-controles">
+                    <button class="btn-pagina anterior">
+                        <i class="fa-solid fa-chevron-left"></i> Anterior
+                    </button>
+                    <button class="btn-pagina activa">1</button>
+                    <button class="btn-pagina">2</button>
+                    <button class="btn-pagina">3</button>
+                    <button class="btn-pagina">...</button>
+                    <button class="btn-pagina">8</button>
+                    <button class="btn-pagina siguiente">
+                        Siguiente <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Información de Soporte -->
+        <div class="soporte-info">
+            <i class="fa-solid fa-headset"></i>
+            <div class="soporte-content">
+                <strong>¿Necesita ayuda?</strong><br>
+                Contacte con Soporte Técnico al <strong>4666-1212</strong> o al correo 
+                <a href="mailto:soporte@biometrika.com">soporte@biometrika.com</a>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div>Copyright© Sistema Biométrico 2025</div>
+            <div>Versión 1.0</div>
+        </div>
+    </main>
+
+    <!-- Menu de usuario -->
+    <nav class="menu">
+        <h3><a><i class="fa-solid fa-bars"></i></a></h3>
+        <div>
+            <ul>
+                <li><a href="../admin/notificaciones.html" class="active"><i class="fa-solid fa-bell"></i><b>  Notificaciones</b></a></li>
+                <li><a href="../admin/perfil.html"><i class="fa-solid fa-user"></i><b>  Perfil</b></a></li>
+                <li><a href="../admin/cambiar_contraseña.html"><i class="fa-solid fa-key"></i><b> contraseña</b></a></li>
+                <li><a href="../admin/configuracion.html"><i class="fa-solid fa-cog"></i><b>  Configuración</b></a></li>
+                <li><a href="../admin/cerrar_sesion.html"><i class="fa-solid fa-right-from-bracket"></i><b>  Cerrar Sesión</b></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Modal de Detalles de Notificación -->
+    <div id="modalDetalle" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-circle-info"></i> Detalles de Notificación</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="detalle-notificacion">
+                    <div class="detalle-header">
+                        <h4 id="detalle-titulo">Título de la Notificación</h4>
+                        <div class="detalle-meta">
+                            <span class="detalle-fecha" id="detalle-fecha">Fecha</span>
+                            <span class="detalle-prioridad" id="detalle-prioridad">Prioridad</span>
+                        </div>
+                    </div>
+                    <div class="detalle-contenido">
+                        <p id="detalle-mensaje">Mensaje de la notificación...</p>
+                        <div class="detalle-adicional">
+                            <h5>Información Adicional</h5>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Tipo:</label>
+                                    <span id="detalle-tipo">Tipo</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Origen:</label>
+                                    <span id="detalle-origen">Origen</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Usuario:</label>
+                                    <span id="detalle-usuario">Usuario</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Dispositivo:</label>
+                                    <span id="detalle-dispositivo">Dispositivo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secundario" id="btnCerrarDetalle">
+                    <i class="fa-solid fa-xmark"></i> Cerrar
+                </button>
+                <button class="btn-primario" id="btnAccionDetalle">
+                    <i class="fa-solid fa-gear"></i> Tomar Acción
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notificación del sistema -->
+    <div id="notificacionSistema" class="notificacion-sistema" style="display: none;"></div>
+
+    <script src="../assets/js/notificaciones.js"></script>
+</body>
+</html>

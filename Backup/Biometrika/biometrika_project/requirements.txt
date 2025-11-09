@@ -1,0 +1,59 @@
+# Django Framework
+Django>=4.2,<5.0
+
+# Manipulación de imágenes (requerido para ImageField)
+Pillow>=10.0.0
+
+# Base de datos (SQLite viene por defecto, pero puedes agregar otros)
+# PostgreSQL
+# psycopg2-binary>=2.9.0
+
+# MySQL
+# mysqlclient>=2.1.0
+
+# Para generar reportes PDF
+reportlab>=4.0.0
+
+# Para exportar a Excel
+openpyxl>=3.1.0
+
+# Para manejo de fechas/horas (mejora)
+python-dateutil>=2.8.0
+
+# Para validación de emails
+django-email-validator>=1.0.0
+
+# Para seguridad adicional
+django-cors-headers>=4.0.0
+django-axes>=6.0.0
+
+# Para manejo de caché (opcional)
+# redis>=4.5.0
+# django-redis>=5.2.0
+
+# Para APIs REST (si planeas desarrollar API)
+djangorestframework>=3.14.0
+django-cors-headers>=4.0.0
+
+# Para documentación automática de API
+drf-yasg>=1.21.0
+
+# Para manejo de archivos estáticos en producción
+whitenoise>=6.0.0
+
+# Para variables de entorno
+python-dotenv>=1.0.0
+
+# Para testing
+pytest>=7.0.0
+pytest-django>=4.5.0
+
+# Para desarrollo
+ipython>=8.0.0
+django-extensions>=3.2.0
+
+# Para debugging
+django-debug-toolbar>=4.0.0
+
+# Para exportación de datos
+django-import-export>=3.0.0

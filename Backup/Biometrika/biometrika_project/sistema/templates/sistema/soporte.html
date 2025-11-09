@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/style_soporte.css' %}">
+    <script src="{% static 'js/soporte.js' %}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Soporte</title>
+</head>
+<body>
+    <a href="{% url 'sistema:dashboard' %}" class="btn-volver" title="Volver al inicio">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <h1>Reportar Un Problema</h1>
+    <p class="subtitulo">Por favor, describa el problema que está experimentando.</p>
+    <div>
+
+    <!-- Mensajes -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="mensaje-exito" id="mensaje-exito" style="display: block;">
+                <i class="fa-solid fa-check"></i>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="mensaje-exito" id="mensaje-exito">
+            <i class="fa-solid fa-check"></i>
+            nos pondremos en contacto con usted lo antes posible.
+        </div>
+    {% endif %}
+
+    <div>
+        <form id="formularioProblema" method="POST" action="{% url 'sistema:soporte' %}">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="nombre"><i class="fa-solid fa-user"></i> Nombre Completo <span class="required">*</span></label>
+                <input type="text" id="nombre" name="nombre" value="{{ form.nombre.value|default:'' }}" required placeholder="Ej: Juan Pérez">
+                {% if form.nombre.errors %}
+                    <div class="error-field">{{ form.nombre.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="email"><i class="fa-solid fa-envelope"></i> Correo Electrónico <span class="required">*</span></label>
+                <input type="email" id="email" name="email" value="{{ form.email.value|default:'' }}" required placeholder="ejemplo@correo.com">
+                {% if form.email.errors %}
+                    <div class="error-field">{{ form.email.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="categoria"><i class="fa-solid fa-list"></i> Categoría del Problema <span class="required">*</span></label>
+                <select id="categoria" name="categoria" required>
+                    <option value="">Selecciona una categoría</option>
+                    <option value="tecnico" {% if form.categoria.value == 'tecnico' %}selected{% endif %}>Problema Técnico</option>
+                    <option value="cuenta" {% if form.categoria.value == 'cuenta' %}selected{% endif %}>Problema con la Cuenta</option>
+                    <option value="pago" {% if form.categoria.value == 'pago' %}selected{% endif %}>Problema con el biométrico</option>
+                    <option value="funcionalidad" {% if form.categoria.value == 'funcionalidad' %}selected{% endif %}>Error de Funcionalidad</option>
+                    <option value="otro" {% if form.categoria.value == 'otro' %}selected{% endif %}>Otro</option>
+                </select>
+                {% if form.categoria.errors %}
+                    <div class="error-field">{{ form.categoria.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="asunto"><i class="fa-solid fa-file-signature"></i> Asunto <span class="required">*</span></label>
+                <input type="text" id="asunto" name="asunto" value="{{ form.asunto.value|default:'' }}" required placeholder="Resumen breve del problema">
+                {% if form.asunto.errors %}
+                    <div class="error-field">{{ form.asunto.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion"><i class="fa-solid fa-comment-dots"></i> Descripción del Problema <span class="required">*</span></label>
+                <textarea id="descripcion" name="descripcion" required placeholder="Describe detalladamente el problema que estás experimentando...">{{ form.descripcion.value|default:'' }}</textarea>
+                {% if form.descripcion.errors %}
+                    <div class="error-field">{{ form.descripcion.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Mostrar errores generales -->
+            {% if form.non_field_errors %}
+                <div class="error-message">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <button type="submit" class="btn"> Enviar Reporte</button>
+        </form>
+    </div>
+    <nav class="menu">
+        <h3><a><i class="fa-solid fa-bars"></i></a></h3>
+        <div>
+            <ul>
+                <li><a href="{% url 'sistema:notificaciones' %}"><i class="fa-solid fa-bell"></i><b>  Notificaciones</b></a></li>
+                <li><a href="{% url 'sistema:perfil' %}"><i class="fa-solid fa-user"></i><b>  Perfil</b></a></li>
+                <li><a href="{% url 'sistema:cambiar_contrasena' %}"><i class="fa-solid fa-key"></i><b> contraseña</b></a></li>
+                <li><a href="{% url 'sistema:configuracion' %}"><i class="fa-solid fa-cog"></i><b>  Configuración</b></a></li>
+                <li><a href="{% url 'sistema:cerrar_sesion' %}"><i class="fa-solid fa-right-from-bracket"></i><b>  Cerrar Sesión</b></a></li>
+            </ul>
+        </div>
+    </nav>
+</body>
+</html>

@@ -1,0 +1,28 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9; /* Mismo color de fondo que el dashboard */
+}
+
+.icono {
+    font-size: 60px;
+    color: #2c3e50; /* Color principal del sidebar */
+    animation: girar 1.2s linear infinite;
+}
+
+@keyframes girar {
+    0%   { transform: rotate(0deg);   }
+    50%  { transform: rotate(180deg); }
+    100% { transform: rotate(360deg); }
+}
+
+p {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #2c3e50; /* Mismo color que los títulos del dashboard */
+    font-size: 18px;
+}
